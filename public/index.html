@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Status</title>
+</head>
+
+<body>
+    <h2>Hydroponic Farming</h2>
+</body>
+<script>
+    // Websocket Connection !
+    const ws = new WebSocket(`wss://${location.host}/`);
+
+    ws.onopen = () => {
+        console.log("Connection Established...");
+    }
+
+    ws.onmessage = (data) => {
+        console.log(data);
+    }
+
+
+</script>
+
+</html>

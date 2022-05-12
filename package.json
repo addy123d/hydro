@@ -1,0 +1,16 @@
+{
+  "name": "hydroponic",
+  "version": "1.0.0",
+  "description": "Hydroponic Farming",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Aditya Chaudhary",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1",
+    "websocket": "^1.0.34",
+    "ws": "^8.6.0"
+  }
+}
