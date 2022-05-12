@@ -10,8 +10,41 @@
 
 <body>
     <h2>Hydroponic Farming</h2>
+    <select class="solenoid">
+        <option>Solenoid</option>
+        <option>On</option>
+        <option>Off</option>
+    </select>
+
+    <select class="red">
+        <option>Red Strip</option>
+        <option>On</option>
+        <option>Off</option>
+    </select>
+
+    <select class="green">
+        <option>Green Strip</option>
+        <option>On</option>
+        <option>Off</option>
+    </select>
+
+    <select class="blue">
+        <option>Blue Strip</option>
+        <option>On</option>
+        <option>Off</option>
+    </select>
+
+    <button class="submit">Apply</button>
 </body>
 <script>
+
+    const solenoidButton = document.querySelector(".solenoid");
+    const red = document.querySelector(".red");
+    const green = document.querySelector(".green");
+    const blue = document.querySelector(".blue");
+    const applyButton = document.querySelector(".submit");
+    
+
     // Websocket Connection !
     const ws = new WebSocket(`wss://${location.host}/`);
 
@@ -22,6 +55,22 @@
     ws.onmessage = (data) => {
         console.log(data);
     }
+
+
+    applyButton.addEventListener("click",()=>{
+        const options = {
+            solenoid : solenoidButton.value,
+            red : red.value,
+            green : green.value,
+            blue : blue.value
+        }
+
+        console.log(options);
+
+        ws.send(JSON.stringify(options));
+
+        location.reload();
+    })
 
 
 </script>

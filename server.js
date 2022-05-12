@@ -34,8 +34,10 @@ wss.on("connection", (ws) => {
             if (client !== ws && client.readyState === webSocket.OPEN) {
                 client.send(JSON.stringify({
                     message: "Data Received",
-                    command: parsed_commands.command,
-                    device: parsed_commands.device
+                    solenoid : parsed_commands.solenoid,
+                    red :parsed_commands.red,
+                    green : parsed_commands.green,
+                    blue : parsed_commands.blue
                 }));
             }
         });
