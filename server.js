@@ -27,11 +27,12 @@ wss.on("connection", (ws) => {
 
         console.log("Commands: ");
         console.log(parsed_commands);
-        console.log(parsed_commands.command);
+        // console.log(parsed_commands.command);
 
         // Broadcast that command over all clients !
         wss.clients.forEach(function each(client) {
             if (client !== ws && client.readyState === webSocket.OPEN) {
+                if(parsed_commands.device === "client"){
                 client.send(JSON.stringify({
                     message: "Data Received",
                     solenoid : parsed_commands.solenoid,
@@ -39,6 +40,11 @@ wss.on("connection", (ws) => {
                     green : parsed_commands.green,
                     blue : parsed_commands.blue
                 }));
+            }else{
+                client.send(JSON.stringify({
+                    message: "Data Received"
+                }));
+            }
             }
         });
     })
