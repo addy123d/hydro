@@ -197,18 +197,18 @@
         font-size: 1.1rem;
     }
 
-    .temperature{
+    .temperature {
         position: absolute;
         top: 70%;
         left: 25%;
-        transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
     }
 
-    .humidity{
+    .humidity {
         position: absolute;
         top: 70%;
         left: 75%;
-        transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
     }
 
     @keyframes progress {
@@ -301,20 +301,20 @@
         color: var(--primary);
     }
 
-    @media all and (max-width : 700px){
-    .temperature{
-        position: absolute;
-        top: 70%;
-        left: 50%;
-        transform: translate(-50%,-50%);
-    }
+    @media all and (max-width : 700px) {
+        .temperature {
+            position: absolute;
+            top: 80%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
 
-    .humidity{
-        position: absolute;
-        top: 90%;
-        left: 50%;
-        transform: translate(-50%,-50%);
-    }
+        .humidity {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
     }
 </style>
 
@@ -325,11 +325,13 @@
 
 
     <div class="temperature">
-        <div role="temperaturebar" class="temp" aria-valuenow="67" aria-valuemin="0" aria-valuemax="100" style="--value: 22"></div>
+        <div role="temperaturebar" class="temp" aria-valuenow="67" aria-valuemin="0" aria-valuemax="100"
+            style="--value: 22"></div>
     </div>
 
     <div class="humidity">
-        <div role="progressbar" class="hum" aria-valuenow="67" aria-valuemin="0" aria-valuemax="100" style="--value: 67"></div>
+        <div role="progressbar" class="hum" aria-valuenow="67" aria-valuemin="0" aria-valuemax="100"
+            style="--value: 67"></div>
     </div>
     <section class="registerForm">
         <div class="container">
@@ -417,29 +419,29 @@
         document.querySelector(".notification").innerHTML = "Applied";
         document.querySelector(".notification").classList.add("active");
 
-        setTimeout(()=>{
+        setTimeout(() => {
             document.querySelector(".notification").classList.remove("active");
-        },3000);
+        }, 3000);
 
         location.reload();
     })
 
     /* Fetch temperature and humidity values */
     fetch('https://api.openweathermap.org/data/2.5/weather?q=Lonavala&appid=ebcfc98f1f68b939d3df858675274e9a&units=metric')
-        .then(res=>res.json())
-        .then((result)=>{
+        .then(res => res.json())
+        .then((result) => {
             console.log(Math.round(result.main.temp));
             console.log(result.main.humidity);
-/* 
-            temperature.dataset.valuenow = Math.round(result.main.temp);
-            humidity.dataset.valuenow = result.main.humidity; */
+            /* 
+                        temperature.dataset.valuenow = Math.round(result.main.temp);
+                        humidity.dataset.valuenow = result.main.humidity; */
             /* style="--value: 22" */
 
-            temperature.setAttribute("style",`--value: ${Math.round(result.main.temp)}`);
-            humidity.setAttribute("style",`--value: ${result.main.humidity}`);
+            temperature.setAttribute("style", `--value: ${Math.round(result.main.temp)}`);
+            humidity.setAttribute("style", `--value: ${result.main.humidity}`);
 
         })
-        .catch(err=>console.log("Error:",err));
+        .catch(err => console.log("Error:", err));
 </script>
 
 </html>
