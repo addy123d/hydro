@@ -34,11 +34,6 @@
         <option>Off</option>
     </select>
 
-    <select class="all">
-        <option>All</option>
-        <option>On</option>
-    </select>
-
     <button class="submit">Apply</button>
 </body>
 <script>
@@ -48,7 +43,6 @@
     const green = document.querySelector(".green");
     const blue = document.querySelector(".blue");
     const applyButton = document.querySelector(".submit");
-    const alloption = document.querySelector(".all");
     
 
     // Websocket Connection !
@@ -69,8 +63,7 @@
             solenoid : solenoidButton.value,
             red : red.value,
             green : green.value,
-            blue : blue.value,
-            all : alloption.value
+            blue : blue.value
         }
 
         console.log(options);
