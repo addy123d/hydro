@@ -1,0 +1,445 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Status</title>
+</head>
+
+<body>
+    <h2>Hydroponic Farming</h2>
+    <select class="solenoid">
+        <option>Solenoid</option>
+        <option>On</option>
+        <option>Off</option>
+    </select>
+
+    <select class="red">
+        <option>Red Strip</option>
+        <option>On</option>
+        <option>Off</option>
+    </select>
+
+    <select class="green">
+        <option>Green Strip</option>
+        <option>On</option>
+        <option>Off</option>
+    </select>
+
+    <select class="blue">
+        <option>Blue Strip</option>
+        <option>On</option>
+        <option>Off</option>
+    </select>
+
+    <button class="submit">Apply</button>
+</body>
+<script>
+
+    const solenoidButton = document.querySelector(".solenoid");
+    const red = document.querySelector(".red");
+    const green = document.querySelector(".green");
+    const blue = document.querySelector(".blue");
+    const applyButton = document.querySelector(".submit");
+    
+
+    // Websocket Connection !
+    const ws = new WebSocket(`wss://${location.host}/`);
+
+    ws.onopen = () => {
+        console.log("Connection Established...");
+    }
+
+    ws.onmessage = (data) => {
+        console.log(data);
+    }
+
+
+    applyButton.addEventListener("click",()=>{
+        const options = {
+            device : "client",
+            solenoid : solenoidButton.value,
+            red : red.value,
+            green : green.value,
+            blue : blue.value
+        }
+
+        console.log(options);
+
+        ws.send(JSON.stringify(options));
+
+        location.reload();
+    })
+
+
+</script>
+
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="/">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+    <title>IOT Controls</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    html,
+    body {
+        background: #f1f5f3;
+        color: #1c1d1e;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .registerForm {
+        background: #f1f5f3;
+        background-size: cover;
+        min-height: 100vh;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container .form {
+        background: #fff;
+        padding: 1em 2em 1em 2em;
+
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+
+        margin-top: 5%;
+    }
+
+    .form>div {
+        margin: 10%;
+    }
+
+    input,
+    select {
+        padding: .6em .8em .6em .8em;
+        outline: none;
+        background: #f1f5f3;
+        border: none;
+        border-radius: 4px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+
+
+    button {
+        position: relative;
+        font-size: .8rem;
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: .5em 1.5em;
+        display: inline-block;
+        border-radius: 6em;
+        transition: all .2s;
+        border: .28px solid #222;
+        font-family: inherit;
+        font-weight: 500;
+        color: black;
+        background-color: white;
+        cursor: pointer;
+    }
+
+    button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    button:active {
+        transform: translateY(-1px);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .title h2 {
+        text-transform: capitalize;
+        margin-bottom: 10%;
+    }
+
+    .notification {
+        position: absolute;
+        top: -5%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        transition: .5s;
+    }
+
+    .notification.active {
+        top: 5%;
+    }
+
+    .notification h2 {
+        background: #fff;
+        padding: .4em .8em .4em .8em;
+        font-size: 1.1rem;
+    }
+
+    .temperature{
+        position: absolute;
+        top: 70%;
+        left: 25%;
+        transform: translate(-50%,-50%);
+    }
+
+    .humidity{
+        position: absolute;
+        top: 70%;
+        left: 75%;
+        transform: translate(-50%,-50%);
+    }
+
+    @keyframes progress {
+        0% {
+            --percentage: 0;
+        }
+
+        100% {
+            --percentage: var(--value);
+        }
+    }
+
+    @property --percentage {
+        syntax: '<number>';
+        inherits: true;
+        initial-value: 0;
+    }
+
+    [role="temperaturebar"] {
+        --percentage: var(--value);
+        --primary: #369;
+        --secondary: #adf;
+        --size: 100px;
+        animation: progress 2s 0.5s forwards;
+        width: var(--size);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        position: relative;
+        overflow: hidden;
+        display: grid;
+        place-items: center;
+    }
+
+    [role="temperaturebar"]::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: conic-gradient(var(--primary) calc(var(--percentage) * 1%), var(--secondary) 0);
+        mask: radial-gradient(white 55%, transparent 0);
+        mask-mode: alpha;
+        -webkit-mask: radial-gradient(#0000 55%, #000 0);
+        -webkit-mask-mode: alpha;
+    }
+
+    [role="temperaturebar"]::after {
+        counter-reset: percentage var(--value);
+        content: counter(percentage) ' C';
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: calc(var(--size) / 5);
+        color: var(--primary);
+    }
+
+    [role="progressbar"] {
+        --percentage: var(--value);
+        --primary: #369;
+        --secondary: #adf;
+        --size: 100px;
+        animation: progress 2s 0.5s forwards;
+        width: var(--size);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        position: relative;
+        overflow: hidden;
+        display: grid;
+        place-items: center;
+    }
+
+    [role="progressbar"]::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: conic-gradient(var(--primary) calc(var(--percentage) * 1%), var(--secondary) 0);
+        mask: radial-gradient(white 55%, transparent 0);
+        mask-mode: alpha;
+        -webkit-mask: radial-gradient(#0000 55%, #000 0);
+        -webkit-mask-mode: alpha;
+    }
+
+    [role="progressbar"]::after {
+        counter-reset: percentage var(--value);
+        content: counter(percentage) '%';
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: calc(var(--size) / 5);
+        color: var(--primary);
+    }
+
+    @media all and (max-width : 700px){
+    .temperature{
+        position: absolute;
+        top: 70%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+    }
+
+    .humidity{
+        position: absolute;
+        top: 90%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+    }
+    }
+</style>
+
+<body>
+    <div class="notification">
+        <!-- <h2>Success ✔</h2> -->
+    </div>
+
+
+    <div class="temperature">
+        <div role="temperaturebar" class="temp" aria-valuenow="67" aria-valuemin="0" aria-valuemax="100" style="--value: 22"></div>
+    </div>
+
+    <div class="humidity">
+        <div role="progressbar" class="hum" aria-valuenow="67" aria-valuemin="0" aria-valuemax="100" style="--value: 67"></div>
+    </div>
+    <section class="registerForm">
+        <div class="container">
+            <div class="form">
+                <div class="title">
+                    <h2>Controls</h2>
+                </div>
+                <div class="name">
+                    <select class="solenoid">
+                        <option hidden>Solenoid</option>
+                        <option>On</option>
+                        <option>Off</option>
+                    </select>
+                </div>
+                <div class="email">
+                    <select class="red">
+                        <option hidden>Red Strip</option>
+                        <option>On</option>
+                    </select>
+                </div>
+                <div class="contact">
+                    <select class="green">
+                        <option hidden>Green Strip</option>
+                        <option>On</option>
+                    </select>
+                </div>
+                <div class="password">
+                    <select class="blue">
+                        <option hidden>Blue Strip</option>
+                        <option>On</option>
+                    </select>
+                </div>
+                <div class="password">
+                    <select class="all">
+                        <option hidden>ALL</option>
+                        <option>On</option>
+                    </select>
+                </div>
+                <div class="button">
+                    <button class="submit">Apply</button>
+                </div>
+                <div class="button">
+                    <a href="/"><button>Back</button></a>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+<script>
+    const solenoidButton = document.querySelector(".solenoid");
+    const red = document.querySelector(".red");
+    const green = document.querySelector(".green");
+    const blue = document.querySelector(".blue");
+    const all = document.querySelector(".all");
+    const applyButton = document.querySelector(".submit");
+    const temperature = document.querySelector(".temp");
+    const humidity = document.querySelector(".hum");
+
+    // Websocket Connection !
+    const ws = new WebSocket(`wss://${location.host}/`);
+
+    ws.onopen = () => {
+        console.log("Connection Established...");
+    }
+
+    ws.onmessage = (data) => {
+        console.log(data);
+    }
+
+
+    applyButton.addEventListener("click", () => {
+        const options = {
+            device: "client",
+            solenoid: solenoidButton.value,
+            red: red.value,
+            green: green.value,
+            blue: blue.value,
+            all: all.value
+        }
+
+        console.log(options);
+
+        ws.send(JSON.stringify(options));
+
+        document.querySelector(".notification").innerHTML = "Applied";
+        document.querySelector(".notification").classList.add("active");
+
+        setTimeout(()=>{
+            document.querySelector(".notification").classList.remove("active");
+        },3000);
+
+        location.reload();
+    })
+
+    /* Fetch temperature and humidity values */
+    fetch('https://api.openweathermap.org/data/2.5/weather?q=Lonavala&appid=ebcfc98f1f68b939d3df858675274e9a&units=metric')
+        .then(res=>res.json())
+        .then((result)=>{
+            console.log(Math.round(result.main.temp));
+            console.log(result.main.humidity);
+/* 
+            temperature.dataset.valuenow = Math.round(result.main.temp);
+            humidity.dataset.valuenow = result.main.humidity; */
+            /* style="--value: 22" */
+
+            temperature.setAttribute("style",`--value: ${Math.round(result.main.temp)}`);
+            humidity.setAttribute("style",`--value: ${result.main.humidity}`);
+
+        })
+        .catch(err=>console.log("Error:",err));
+</script>
+
+</html>
