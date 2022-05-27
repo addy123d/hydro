@@ -38,7 +38,8 @@ wss.on("connection", (ws) => {
                     solenoid : parsed_commands.solenoid,
                     red :parsed_commands.red,
                     green : parsed_commands.green,
-                    blue : parsed_commands.blue
+                    blue : parsed_commands.blue,
+                    all : parsed_commands.all
                 }));
             }else{
                 client.send(JSON.stringify({
